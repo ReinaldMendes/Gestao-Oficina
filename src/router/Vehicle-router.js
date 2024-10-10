@@ -7,6 +7,7 @@ import {
 } from "../controller/Vehicle-controller.js";
 const router = Router();
 router.get("/", index);
+router.get("/:id", index);
 router.post("/", store); // Criar usuário
 router.put("/:id", update); // Atualizar usuário
 router.delete("/:id", destroy); // Deletar usuário

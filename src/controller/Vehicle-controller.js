@@ -1,47 +1,51 @@
-import vehicle from "../model/Vehicle_model.js";
+import vehicle from "../model/Vehicle-model.js";
 
-export const store = async (req, resp) => {
+export const store = async (req, res) => {
   try {
     const content = await vehicle.create(req.body);
-    resp.json();
+    res.status(201).json(content);
   } catch (error) {
-    resp.json(error);
+    res.status(400).send(error.message);
   }
 };
-export const index = async (req, resp) => {
+
+export const index = async (req, res) => {
   try {
-    const content = await vehicle.find().exec();
-    resp.json(content);
+    const content = await vehicle.find(req.query).exec();
+    res.json(content);
   } catch (error) {
-    resp.json(error);
+    res.status(400).send(error.message);
   }
 };
-export const show = async (req, resp) => {
+
+export const show = async (req, res) => {
   try {
     const content = await vehicle
       .findById(req.params.id)
-      .populate("maintenances")
+      .populate("maintenance")
       .exec();
-    resp.json(content);
+    res.json(content);
   } catch (error) {
-    resp.json(error);
+    res.status(400).send(error.message);
   }
 };
-export const update = async (res, resp) => {
+
+export const update = async (req, res) => {
   try {
     const content = await vehicle
       .findByIdAndUpdate(req.params.id, req.body)
       .exec();
-    resp.json();
+    res.json(content);
   } catch (error) {
-    resp.json(error);
+    res.status(400).send(error.message);
   }
 };
-export const destroy = async (req, resp) => {
+
+export const destroy = async (req, res) => {
   try {
-    vehicle.findByIdAndDelete(req.params.id).exec();
-    resp.json();
+    const content = await vehicle.findByIdAndDelete(req.params.id).exec();
+    res.json(content);
   } catch (error) {
-    resp.json(error);
+    res.status(400).send(error.message);
   }
 };

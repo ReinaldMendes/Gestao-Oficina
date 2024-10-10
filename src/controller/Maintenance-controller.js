@@ -1,5 +1,5 @@
 import { populate } from "dotenv";
-import maintenance from "../model/Maintenance_model.js";
+import maintenance from "../model/Maintenance-model.js";
 
 export const store = async (req, resp) => {
   try {
@@ -27,14 +27,14 @@ export const show = async (req, resp) => {
     resp.json(error);
   }
 };
-export const update = async (res, resp) => {
+export const update = async (req, res) => {
   try {
     const content = await maintenance
       .findByIdAndUpdate(req.params.id, req.body)
       .exec();
-    resp.json();
+    res.json(content);
   } catch (error) {
-    resp.json(error);
+    res.status(400).send(error.message);
   }
 };
 export const destroy = async (req, resp) => {
