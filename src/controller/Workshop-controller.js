@@ -1,9 +1,3 @@
-// * Workshop (Oficina)
-//     * name  - o nome da oficina (String)
-//     * address - o endereço completo da oficina (String)
-//     * specialties - uma lista de especialidades da oficina ex: motor, freios, suspensão (Array de Strings)
-//     * maintenances - Um array de ObjectID referenciando a manutenção, aqui se armazena todas as manutenções realizada pela oficina (é um valor computado)
-
 import workshop from "../model/Workshop-model.js";
 
 export const store = async (req, resp) => {
