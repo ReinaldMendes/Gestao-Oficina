@@ -1,20 +1,14 @@
-// * Maintenance (Manutenção)
-//     * workshop - referenciando a oficina onde a manutenção foi realizada (ObjectId em referência ao Workshop)
-//     * vehicle - referenciando o veículo que foi submetido à manutenção (ObjectId em referência ao Vehicle)
-//     * services - os serviços prestados, cada um contendo o nome do serviço e o preço (Subdocumento com name (String) e price (Number))
-//     * date - a data em que a manutenção foi realizada (Date)
-//     * totalCost - valor total da manutenção (Number computado do campo *price de *services)
-
 import { Schema, model } from "mongoose";
 
 const serviceSchema = new Schema({
   name: {
     type: Schema.Types.String,
-    requirede: true,
+    required: true,
   },
   price: {
     type: Schema.Types.Number,
     min: 0,
+    required: true,
   },
 });
 
@@ -30,18 +24,27 @@ const maintenanceSchema = new Schema(
       ref: "Vehicle",
       required: true,
     },
-    service: serviceSchema,
+    services: [{ serviceSchema }],
     date: {
-      type: Number,
-      min: 0,
+      type: Date,
       required: true,
     },
     totalCost: {
-      type: String,
+      type: Number,
+      required: true,
+      default: 0,
     },
   },
-  { timesstamps: true }
+  { timestamps: true }
 );
+
+maintenanceSchema.pre("save", function (next) {
+  this.totalCost = this.services.reduce(
+    (total, services) => total + services.price,
+    0
+  );
+  next();
+});
 
 const Maintenance = model("Maintenance", maintenanceSchema);
 
